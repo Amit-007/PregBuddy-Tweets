@@ -165,8 +165,10 @@ class TweetsTableViewCell: UITableViewCell {
         
         mediaImage.topAnchor.constraint(equalTo: tweetedText.bottomAnchor, constant: 10).isActive = true
         mediaImage.leadingAnchor.constraint(equalTo: customBackgroundView.leadingAnchor, constant: 90).isActive = true
-        mediaImage.trailingAnchor.constraint(equalTo: customBackgroundView.trailingAnchor, constant: -20).isActive = true
+        mediaImage.trailingAnchor.constraint(equalTo: customBackgroundView.trailingAnchor, constant: -20).isActive = false
         mediaImage.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        mediaImage.widthAnchor.constraint(equalToConstant: 250).isActive = true
+
         mediaImage.bottomAnchor.constraint(equalTo: customBackgroundView.bottomAnchor, constant: -20).isActive = false
         
         bookmarkBtn.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20).isActive = true
