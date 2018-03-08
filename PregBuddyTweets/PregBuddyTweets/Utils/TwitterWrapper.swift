@@ -59,7 +59,7 @@ class TwitterWrapper: NSObject {
                 if error == nil{
                     do {
                         let json = try JSONSerialization.jsonObject(with: data!, options: []) as! [String: Any]
-                        print("json: \(json)")
+                       // print("json: \(json)")
                         
                         let search_metadata = json["search_metadata"] as! [String: Any]
                         self.max_id_str = search_metadata["max_id_str"] as! String

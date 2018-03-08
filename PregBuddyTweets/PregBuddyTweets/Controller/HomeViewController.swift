@@ -21,6 +21,11 @@ class HomeViewController: UIViewController {
         tableView.register(TweetsTableViewCell.self, forCellReuseIdentifier: kTweetsTableViewCell)
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
+        let footer = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44))
+        footer.addSubview(loader)
+        loader.centerXAnchor.constraint(equalTo: footer.centerXAnchor).isActive = true
+        loader.centerYAnchor.constraint(equalTo: footer.centerYAnchor).isActive = true
+        tableView.tableFooterView = footer
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -35,6 +40,15 @@ class HomeViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    fileprivate lazy var loader: UIActivityIndicatorView = {
+       
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle:.white)
+        activityIndicator.color = .twitter
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
     }()
     
     fileprivate lazy var segmentControl: UISegmentedControl = {
@@ -132,6 +146,8 @@ extension HomeViewController: UIScrollViewDelegate{
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if (tableView.contentOffset.y) + (tableView.frame.size.height) >= tableView.contentSize.height{
             if !isDataLoading{
+                tableView.tableFooterView!.isHidden = false
+                loader.startAnimating()
                 isDataLoading = true
                 self.fetchTweets()
             }
@@ -149,6 +165,9 @@ extension HomeViewController{
         
        
         TwitterWrapper.shared().loadTweets { (tweets, error) in
+            
+            self.tableView.tableFooterView!.isHidden = true
+            self.loader.stopAnimating()
             if error == nil{
                 DispatchQueue.main.async(execute: {
                     guard let safeTweet = tweets else {
