@@ -32,7 +32,7 @@ class Tweets: NSObject {
         
         for tweets in statuses {
             
-            let created_at = String.checkIfStringIsNull(forItem: tweets, key: "created_at")
+            let created_at = String.checkIfStringIsNull(forItem: tweets, key: "created_at").trimWhiteSpaces()
             let retweet_count = NSNumber.checkIfNumberIsNull(forItem: tweets, forKey: "retweet_count")
             let entitiesPresent = Dictionary<String, Any>.ifExists(forItem: tweets, withKey: "entities")
             var media_url = ""
@@ -47,22 +47,21 @@ class Tweets: NSObject {
                     let media = entities!["media"] as? [[String: Any]]
                     if media != nil && media?.count != 0{
                         let mediaAtFirstIndex = media![0]
-                        media_url = String.checkIfStringIsNull(forItem: mediaAtFirstIndex, key: "media_url_https")
+                        media_url = String.checkIfStringIsNull(forItem: mediaAtFirstIndex, key: "media_url_https").trimWhiteSpaces()
                     }
                 }
             }
-            let text = String.checkIfStringIsNull(forItem: tweets, key: "text")
+            let text = String.checkIfStringIsNull(forItem: tweets, key: "text").trimWhiteSpaces()
             var name = ""
             var screen_name = ""
-
             var profile_image_url = ""
             
             if Dictionary<String, Any>.ifExists(forItem: tweets, withKey: "user") == true{
                 let user = tweets["user"] as? [String: Any]
                 if user != nil{
-                    name = String.checkIfStringIsNull(forItem: user!, key: "name")
-                    screen_name = String.checkIfStringIsNull(forItem: user!, key: "screen_name")
-                    profile_image_url = String.checkIfStringIsNull(forItem: user!, key: "profile_background_image_url_https")
+                    name = String.checkIfStringIsNull(forItem: user!, key: "name").trimWhiteSpaces()
+                    screen_name = String.checkIfStringIsNull(forItem: user!, key: "screen_name").trimWhiteSpaces()
+                    profile_image_url = String.checkIfStringIsNull(forItem: user!, key: "profile_background_image_url_https").trimWhiteSpaces()
                 }
             }
             let tweet = Tweet(created_at: created_at, retweet_count: "\(retweet_count)", text: text, hashTag: hashTag, name: name, profile_image_url: profile_image_url, media_url: media_url,screen_name: screen_name)
