@@ -164,7 +164,6 @@
 				EE523B0D20503E4400E6CF88 /* AppDelegate */,
 				EE523B0220503E4400E6CF88 /* Controller */,
 				EE523B0020503E4400E6CF88 /* Modal */,
-				EE523AFF20503E4300E6CF88 /* Resources */,
 				EE523B0920503E4400E6CF88 /* Utils */,
 				EE523AFD20503E4300E6CF88 /* View */,
 				EE523B0620503E4400E6CF88 /* ViewController+Extensions */,
@@ -200,13 +199,6 @@
 				EE523B1A2050419D00E6CF88 /* TweetsTableViewCell.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		EE523AFF20503E4300E6CF88 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		EE523B0020503E4400E6CF88 /* Modal */ = {
