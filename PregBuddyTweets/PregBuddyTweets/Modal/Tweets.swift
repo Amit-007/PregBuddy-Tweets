@@ -27,9 +27,7 @@ class Tweets: NSObject {
     class func parseTweets(_ tweetsResponse : [String : Any]) -> [Tweet] {
         
         var tweetsArray = [Tweet]()
-        
         let statuses = tweetsResponse["statuses"] as! [[String: Any]]
-        
         for tweets in statuses {
             
             let created_at = String.checkIfStringIsNull(forItem: tweets, key: "created_at").trimWhiteSpaces()
@@ -69,7 +67,6 @@ class Tweets: NSObject {
             tweetsArray.append(tweet)
         }
         return tweetsArray
-        
     }
     
     

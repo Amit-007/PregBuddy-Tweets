@@ -106,7 +106,7 @@ class CoreDataWrapper: NSObject {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CORE_DATA_ENTITY_TWEETS_LIST)
         do {
             tweets = try managedObjectContext().fetch(fetchRequest) as! [TweetsList]
-            print("Tweets Count \(tweets.count)")
+          //  print("Tweets Count \(tweets.count)")
         } catch let err as NSError {
             print(err.debugDescription)
         }

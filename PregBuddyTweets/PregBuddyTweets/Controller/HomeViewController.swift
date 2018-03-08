@@ -30,9 +30,6 @@ class HomeViewController: UIViewController {
         return array
     }()
     
-    var pageCount: Int = 1
-    var limit: Int = 20
-    
     fileprivate lazy var segmentControlContainerView: UIView = {
         
         let view = UIView()
@@ -92,12 +89,15 @@ class HomeViewController: UIViewController {
         }
     }
     
+    
+    fileprivate var isDataLoading: Bool = false
+    
     // MARK: - View LifeCycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
-
+        fetchTweets()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,7 +107,6 @@ class HomeViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.topItem?.title = "PregBuddy Tweets"
         segmentControl.selectedSegmentIndex = 0
-        fetchTweets()
     }
 
     
@@ -124,6 +123,22 @@ class HomeViewController: UIViewController {
     }
 }
 
+extension HomeViewController: UIScrollViewDelegate{
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isDataLoading = false
+    }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if (tableView.contentOffset.y) + (tableView.frame.size.height) >= tableView.contentSize.height{
+            if !isDataLoading{
+                isDataLoading = true
+                self.fetchTweets()
+            }
+        }
+    }
+
+}
 
 
 extension HomeViewController{
@@ -132,13 +147,16 @@ extension HomeViewController{
 
     fileprivate func fetchTweets(){
         
+       
         TwitterWrapper.shared().loadTweets { (tweets, error) in
             if error == nil{
                 DispatchQueue.main.async(execute: {
                     guard let safeTweet = tweets else {
                         return
                     }
-                    self.tweets = safeTweet
+                    for tweet in safeTweet{
+                        self.tweets.append(tweet)
+                    }
                     self.tableView.reloadData()
                 })
             }else{

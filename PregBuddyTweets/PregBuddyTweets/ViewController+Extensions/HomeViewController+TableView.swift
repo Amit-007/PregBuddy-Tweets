@@ -13,6 +13,7 @@ import UIKit
 extension HomeViewController: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("COUNT ******** \(tweets.count)")
         return tweets.count
     }
     
