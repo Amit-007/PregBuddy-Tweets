@@ -28,6 +28,8 @@ class SignInController: UIViewController {
 
 extension SignInController{
     
+    // MARK: - Private Methods
+
     fileprivate func setupLayout(){
       
         let store = TWTRTwitter.sharedInstance().sessionStore
@@ -57,6 +59,7 @@ extension SignInController{
                         self.moveToHome(true)
                     } else {
                         print("error: \(String(describing: loginerror?.localizedDescription))")
+                        self.showMessage((loginerror?.localizedDescription)!)
                     }
                 })
             }
