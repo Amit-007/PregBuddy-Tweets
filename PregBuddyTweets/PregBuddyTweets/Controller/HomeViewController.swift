@@ -53,11 +53,39 @@ class HomeViewController: UIViewController {
     @objc func filterChanged(_ segmentedControl: UISegmentedControl){
         
         switch segmentedControl.selectedSegmentIndex {
+            
         case 0:
-            print("0")
+            TwitterWrapper.shared().fetchTweets(.liked, completion: { (tweets, error) in
+               
+                if error == nil{
+                    DispatchQueue.main.async(execute: {
+                        guard let safeTweets = tweets else {
+                            return
+                        }
+                        self.tweets = safeTweets
+                        self.tableView.reloadData()
+                    })
+                }else{
+                    self.showMessage((error?.localizedDescription)!)
+                }
+            })
             break
         case 1:
-            print("1")
+            TwitterWrapper.shared().fetchTweets(.retweeted, completion: { (tweets, error) in
+               
+                if error == nil{
+                    DispatchQueue.main.async(execute: {
+                        guard let safeTweets = tweets else {
+                            return
+                        }
+                        self.tweets = safeTweets
+                        self.tableView.reloadData()
+                    })
+                }else{
+                    self.showMessage((error?.localizedDescription)!)
+                }
+
+            })
             break
         default:
             break
@@ -78,24 +106,8 @@ class HomeViewController: UIViewController {
         self.tabBarController?.navigationItem.hidesBackButton = true
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.topItem?.title = "PregBuddy Tweets"
-        TwitterWrapper.shared().loadTweets { (tweets, error) in
-            
-            if error == nil{
-              
-                DispatchQueue.main.async(execute: {
-                    
-                    guard let safeTweet = tweets else {
-                        return
-                    }
-                    self.tweets = safeTweet
-                    self.tableView.reloadData()
-                })
-            }else{
-                self.showMessage((error?.localizedDescription)!)
-            }
-        
-            
-        }
+        segmentControl.selectedSegmentIndex = 0
+        fetchTweets()
     }
 
     
@@ -118,6 +130,23 @@ extension HomeViewController{
     
     // MARK: - Private Methods
 
+    fileprivate func fetchTweets(){
+        
+        TwitterWrapper.shared().loadTweets { (tweets, error) in
+            if error == nil{
+                DispatchQueue.main.async(execute: {
+                    guard let safeTweet = tweets else {
+                        return
+                    }
+                    self.tweets = safeTweet
+                    self.tableView.reloadData()
+                })
+            }else{
+                self.showMessage((error?.localizedDescription)!)
+            }
+        }
+    }
+    
     fileprivate func setupLayout(){
         
         addUserInterfaceElements()

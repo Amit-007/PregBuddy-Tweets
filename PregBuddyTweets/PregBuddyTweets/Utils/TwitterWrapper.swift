@@ -11,6 +11,11 @@ import Foundation
 import TwitterKit
 import TwitterCore
 
+enum type {
+    case mixed
+    case retweeted
+    case liked
+}
 
 class TwitterWrapper: NSObject {
     
@@ -58,5 +63,50 @@ class TwitterWrapper: NSObject {
             }
         }
     }
-
+    
+    
+    func fetchTweets(_ type: type, completion: @escaping(([Tweet]?,Error?)->()))  {
+        
+        var resultType: String = ""
+        
+        switch type {
+        case .liked:
+            resultType = "recent"
+            break
+        case .mixed:
+            resultType = "mixed"
+            break
+        case .retweeted:
+            resultType = "popular"
+            break
+        }
+        let session = TWTRTwitter.sharedInstance().sessionStore.session()
+        guard let userID = session?.userID else {
+            return }
+        let client = TWTRAPIClient(userID: userID)
+        let statusesShowEndpoint = "https://api.twitter.com/1.1/search/tweets.json"
+        let params = ["q": "pregnancy",
+                      "count": "10",
+                      "result_type": resultType]
+        
+        var clientError : NSError?
+        let request = client.urlRequest(withMethod: "GET", urlString: statusesShowEndpoint, parameters: params, error: &clientError)
+        client.sendTwitterRequest(request) { (urlresponse, data, error) in
+            if error == nil{
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: [])
+                    print("json: \(json)")
+                    let tweets = Tweets.parseTweets(json as! [String : Any])
+                    print(tweets)
+                    completion(tweets,error)
+                } catch let jsonError as NSError {
+                    print("json error: \(jsonError.localizedDescription)")
+                    completion(nil,error)
+                }
+            }else{
+                print(error?.localizedDescription ?? "")
+                completion(nil,error)
+            }
+        }
+    }
 }

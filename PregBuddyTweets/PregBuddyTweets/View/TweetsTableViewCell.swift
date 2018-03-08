@@ -80,6 +80,7 @@ class TweetsTableViewCell: UITableViewCell {
         
         let imageView = UIImageView()
         imageView.clipsToBounds = true
+        imageView.image = UIColor.twitter.imageRepresentation
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 4.0
         imageView.translatesAutoresizingMaskIntoConstraints = false
