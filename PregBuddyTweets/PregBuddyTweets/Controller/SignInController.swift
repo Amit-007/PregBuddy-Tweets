@@ -50,15 +50,15 @@ extension SignInController{
             
             if (session != nil) {
                 self.moveToHome(true)
-                print("signed in as \(String(describing: session?.userName))")
+                //print("signed in as \(String(describing: session?.userName))")
             } else {
                 print("error: \(String(describing: error?.localizedDescription))")
                 TWTRTwitter.sharedInstance().logIn(completion: { (loginsession, loginerror) in
                     if (session != nil) {
-                        print("signed in as \(String(describing: loginsession?.userName))")
+                       // print("signed in as \(String(describing: loginsession?.userName))")
                         self.moveToHome(true)
                     } else {
-                        print("error: \(String(describing: loginerror?.localizedDescription))")
+                        //print("error: \(String(describing: loginerror?.localizedDescription))")
                         self.showMessage((loginerror?.localizedDescription)!)
                     }
                 })

@@ -47,7 +47,6 @@ class TweetsTableViewCell: UITableViewCell {
         }
     }
     
-    
     private lazy var customBackgroundView: UIView = {
        
         let view = UIView()
@@ -87,7 +86,7 @@ class TweetsTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    private lazy var mediaImage: UIImageView = {
+     lazy var mediaImage: UIImageView = {
         
         let imageView = UIImageView()
         imageView.clipsToBounds = true
